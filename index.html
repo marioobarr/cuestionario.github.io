@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de Compra</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 400px;
+      margin: auto;
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+      display: none; /* Oculto por defecto */
+    }
+    .container.active {
+      display: block; /* Mostrar cuando esté activo */
+    }
+    .btn {
+      padding: 10px 15px;
+      border: none;
+      margin: 5px;
+      color: white;
+      background-color: #007bff;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #0056b3;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    label {
+      text-align: left;
+      display: block;
+      margin-bottom: 5px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <!-- Primera pantalla: Selección de cantidad -->
+  <div id="step1" class="container active">
+    <h2>Seleccionar cantidad</h2>
+    <button class="btn" onclick="adjustQuantity(-1)">-</button>
+    <span id="quantity">1</span>
+    <button class="btn" onclick="adjustQuantity(1)">+</button>
+    <p>Precio: <span id="price">18</span> €</p>
+    <p>Gastos de gestión: 1.80 €</p>
+    <h3>Total: <span id="total">19.80</span> €</h3>
+    <button class="btn" onclick="goToStep2()">Continuar</button>
+  </div>
+
+  <!-- Segunda pantalla: Datos personales -->
+  <div id="step2" class="container">
+    <h2>Introduce tus datos</h2>
+    <form id="userDataForm" onsubmit="submitForm(event)">
+      <label for="name">Nombre completo:</label>
+      <input type="text" id="name" name="name" placeholder="Introduce tu nombre" required>
+
+      <label for="age">Edad:</label>
+      <input type="number" id="age" name="age" placeholder="Introduce tu edad" min="1" required>
+
+      <label for="dni">DNI/NIE:</label>
+      <input type="text" id="dni" name="dni" placeholder="Introduce tu DNI o NIE" required>
+
+      <button type="submit" class="btn">Enviar</button>
+    </form>
+  </div>
+
+  <script>
+    let quantity = 1;
+    const pricePerTicket = 18;
+    const gestionCost = 1.80;
+
+    // Función para ajustar la cantidad y actualizar los precios
+    function adjustQuantity(change) {
+      quantity = Math.max(1, quantity + change);
+      document.getElementById("quantity").innerText = quantity;
+      const price = quantity * pricePerTicket;
+      document.getElementById("price").innerText = price.toFixed(2);
+      const total = price + gestionCost;
+      document.getElementById("total").innerText = total.toFixed(2);
+    }
+
+    // Función para pasar al paso 2 (introducir datos)
+    function goToStep2() {
+      document.getElementById("step1").classList.remove("active");
+      document.getElementById("step2").classList.add("active");
+    }
+
+    // Función para manejar el envío del formulario
+    function submitForm(event) {
+      event.preventDefault(); // Evita que la página se recargue
+      const name = document.getElementById("name").value;
+      const age = document.getElementById("age").value;
+      const dni = document.getElementById("dni").value;
+
+      alert(`Datos recibidos:\nNombre: ${name}\nEdad: ${age}\nDNI/NIE: ${dni}\n¡Gracias por tu compra!`);
+      // Aquí puedes procesar o enviar los datos al servidor
+    }
+  </script>
+</body>
+</html>
